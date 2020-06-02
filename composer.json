@@ -1,6 +1,11 @@
 {
   "name": "grability/module-mobu",
   "description": "Grability Mobu Extension",
+  "require": {
+    "mageplaza/module-webhook": "^1.1.1",
+    "mageplaza/module-smtp": "^1.3",
+    "mercadopago/magento2-plugin": "2.*"
+  },
   "type": "magento2-module",
   "license": "proprietary",
   "authors": [
