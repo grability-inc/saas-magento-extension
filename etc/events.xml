@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Grability
+ *
+ * @category            Grability
+ * @package             Grability_Mobu
+ * @copyright           Copyright (c) Grability (https://www.grability.com/)
+ * @termsAndConditions  https://www.grability.com/legal
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="catalog_product_import_bunch_save_after">
+        <observer name="grability_mobu_import_products" instance="Grability\Mobu\Observer\AfterProducts"/>
+    </event>
+    <event name="catalog_product_import_bunch_delete_commit_before">
+        <observer name="grability_mobu_delete_products" instance="Grability\Mobu\Observer\BeforeProducts"/>
+    </event>
+</config>

@@ -1,0 +1,20 @@
+{
+  "name": "grability/module-mobu",
+  "description": "Grability Mobu Extension",
+  "type": "magento2-module",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Grability Mobu",
+      "email": "saas@grability.com"
+    }
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Grability\\Mobu\\": ""
+    }
+  }
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Grability
+ *
+ * @category            Grability
+ * @package             Grability_Mobu
+ * @copyright           Copyright (c) Grability (https://www.grability.com/)
+ * @termsAndConditions  https://www.grability.com/legal
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Grability_Mobu" setup_version="1.0.0" schema_version="1.0.0">
+        <sequence>
+            <module name="Mageplaza_Webhook"/>
+        </sequence>
+    </module>
+</config>
