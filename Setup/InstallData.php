@@ -11,6 +11,7 @@ use Magento\Framework\Filesystem\DirectoryList;
 use Magento\Framework\Setup\InstallDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
+use Psr\Log\LoggerInterface;
 
 class InstallData implements InstallDataInterface
 {
@@ -18,15 +19,18 @@ class InstallData implements InstallDataInterface
     protected $configWriter;
     protected $dir;
     protected $eavSetupFactory;
+    protected $logger;
 
     public function __construct(
         DirectoryList $dir,
         EavSetupFactory $eavSetupFactory,
+        LoggerInterface $logger,
         WriterInterface $configWriter
     ) {
         $this->configWriter = $configWriter;
         $this->dir = $dir;
         $this->eavSetupFactory = $eavSetupFactory;
+        $this->logger = $logger;
     }
 
     public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
@@ -46,11 +50,12 @@ class InstallData implements InstallDataInterface
 
     public function getConfigurator()
     {
-        if (null === $this->configurator) {
+        if ($this->configurator === null) {
             try {
                 $dotenv = new Dotenv($this->dir->getRoot());
                 $dotenv->load();
             } catch (\Exception $e) {
+                $this->logger->error('Magento_Mobu -> environment file does not exist in project root');
             }
 
             $this->configurator = $dotenv;
@@ -242,18 +247,24 @@ class InstallData implements InstallDataInterface
 
     public function logoLoader()
     {
-        $url = getenv('LOGO_URL');
-        $contents = file_get_contents($url);
-        $rootDir = $this->dir->getRoot();
-        $name = 'custom_logo.' . getenv('LOGO_EXTENSION');
+        try {
+            $url = getenv('LOGO_URL');
 
-        $imgHeader = "{$rootDir}/pub/media/logo/default/{$name}";
-        $imgEmails = "{$rootDir}/pub/media/email/logo/default/{$name}";
+            $contents = file_get_contents($url);
 
-        file_put_contents($imgHeader, $contents);
-        file_put_contents($imgEmails, $contents);
+            $rootDir = $this->dir->getRoot();
+            $name = 'custom_logo.' . getenv('LOGO_EXTENSION');
 
-        $this->setData('design/header/logo_src', "default/{$name}");
-        $this->setData('design/email/logo', "default/{$name}");
+            $imgHeader = "{$rootDir}/pub/media/logo/default/{$name}";
+            $imgEmails = "{$rootDir}/pub/media/email/logo/default/{$name}";
+
+            file_put_contents($imgHeader, $contents);
+            file_put_contents($imgEmails, $contents);
+
+            $this->setData('design/header/logo_src', "default/{$name}");
+            $this->setData('design/email/logo', "default/{$name}");
+        } catch (\Exception $e) {
+            $this->logger->error('Magento_Mobu -> invalid logo url');
+        }
     }
 }
