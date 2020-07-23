@@ -54,11 +54,10 @@ class InstallData implements InstallDataInterface
             try {
                 $dotenv = new Dotenv($this->dir->getRoot());
                 $dotenv->load();
+                $this->configurator = $dotenv;
             } catch (\Exception $e) {
                 $this->logger->error('Magento_Mobu -> environment file does not exist in project root');
             }
-
-            $this->configurator = $dotenv;
         }
 
         return $this->configurator;
@@ -104,11 +103,10 @@ class InstallData implements InstallDataInterface
 
     public function mercadopagoLoader()
     {
-        $this->setData('payment/mercadopago/country', getenv('PAYMENT_MERCADOPAGO_COUNTRY'));
-        $this->setData('payment/mercadopago_standard/active', getenv('PAYMENT_MERCADOPAGO_STANDARD_ACTIVE'));
-        $this->setData('payment/mercadopago_standard/client_id', getenv('PAYMENT_MERCADOPAGO_STANDARD_CLIENT_ID'));
-        $this->setData('payment/mercadopago_standard/client_secret', getenv('PAYMENT_MERCADOPAGO_STANDARD_CLIENT_SECRET'));
-        $this->setData('payment/mercadopago_standard/sandbox_mode', getenv('PAYMENT_MERCADOPAGO_STANDARD_SANDBOX_MODE'));
+        $this->setData('payment/mercadopago/public_key', getenv('PAYMENT_MERCADOPAGO_PUBLIC_KEY'));
+        $this->setData('payment/mercadopago/access_token', getenv('PAYMENT_MERCADOPAGO_ACCESS_TOKEN'));
+        $this->setData('payment/mercadopago_custom/active', '1');
+        $this->setData('payment/mercadopago_basic/active', '0');
     }
 
     public function webhooksLoader(ModuleDataSetupInterface $setup)

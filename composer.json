@@ -4,7 +4,7 @@
   "require": {
     "mageplaza/module-webhook": "1.1.1",
     "mageplaza/module-smtp": "^1.3",
-    "mercadopago/magento2-plugin": "2.*",    
+    "mercadopago/magento2-plugin": "3.*",
     "vlucas/phpdotenv": "^2.6.5"
   },
   "type": "magento2-module",
