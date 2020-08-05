@@ -115,74 +115,77 @@ class InstallData implements InstallDataInterface
         $baseUrl = getenv('WEBHOOKS_BASE_PAYLOAD_URL');
         $appId= getenv('WEBHOOKS_APP_ID');
 
+        $baseHook = [
+            'status'        => '1',
+            'store_ids'     => '0',
+            'priority'      => '0',
+            'headers'       => '{"_1592877368095_95":{"name":"app_id","value":"'. $appId .'"}}',
+            'content_type'  => 'application/json',
+        ];
+
         $hooks = [
             [
-                'name' => 'On Product Create',
-                'status' => '1',
-                'store_ids' => '0',
-                'hook_type' => 'new_product',
-                'priority' => '0',
-                'payload_url' => $baseUrl . '/shop-integrations/product',
-                'method' => 'POST',
-                'headers' => '{"_1592877368095_95":{"name":"app_id","value":"'. $appId .'"}}',
-                'content_type' => 'application/json',
+                'name'          => 'On Product Create',
+                'hook_type'     => 'new_product',
+                'payload_url'   => "{$baseUrl}/shop-integrations/product",
+                'method'        => 'POST',
+                'body'          => '{"sku": "{{ item.sku }}"}',
+            ],
+            [
+                'name'          => 'On Product Update',
+                'hook_type'     => 'update_product',
+                'payload_url'   => "{$baseUrl}/shop-integrations/product",
+                'method'        => 'PUT',
                 'body' => '{"sku": "{{ item.sku }}"}',
             ],
             [
-                'name' => 'On Product Update',
-                'status' => '1',
-                'store_ids' => '0',
-                'hook_type' => 'update_product',
-                'priority' => '0',
-                'payload_url' => $baseUrl . '/shop-integrations/product',
-                'method' => 'PUT',
-                'headers' => '{"_1592877368095_95":{"name":"app_id","value":"'. $appId .'"}}',
-                'content_type' => 'application/json',
-                'body' => '{"sku": "{{ item.sku }}"}',
+                'name'          => 'On Product Delete',
+                'hook_type'     => 'delete_product',
+                'payload_url'   => "{$baseUrl}/shop-integrations/product",
+                'method'        => 'DELETE',
+                'body'          => '{"sku": "{{ item.sku }}"}',
             ],
             [
-                'name' => 'On Category Create',
-                'status' => '1',
-                'store_ids' => '0',
-                'hook_type' => 'new_category',
-                'priority' => '0',
-                'payload_url' => $baseUrl . '/shop-integrations/category',
-                'method' => 'POST',
-                'headers' => '{"_1592877368095_95":{"name":"app_id","value":"'. $appId .'"}}',
-                'content_type' => 'application/json',
-                'body' => '{"categoryId": "{{ item.entity_id }}"}',
+                'name'          => 'On Category Create',
+                'hook_type'     => 'new_category',
+                'payload_url'   => "{$baseUrl}/shop-integrations/category",
+                'method'        => 'POST',
+                'body'          => '{"categoryId": "{{ item.entity_id }}"}',
             ],
             [
-                'name' => 'On Category Update',
-                'status' => '1',
-                'store_ids' => '0',
-                'hook_type' => 'update_category',
-                'priority' => '0',
-                'payload_url' => $baseUrl . '/shop-integrations/category',
-                'method' => 'PUT',
-                'headers' => '{"_1592877368095_95":{"name":"app_id","value":"'. $appId .'"}}',
-                'content_type' => 'application/json',
-                'body' => '{"categoryId": "{{ item.entity_id }}"}',
+                'name'          => 'On Category Update',
+                'hook_type'     => 'update_category',
+                'payload_url'   => "{$baseUrl}/shop-integrations/category",
+                'method'        => 'PUT',
+                'body'          => '{"categoryId": "{{ item.entity_id }}"}',
             ],
             [
-                'name' => 'On Import Products',
-                'status' => '1',
-                'store_ids' => '0',
-                'hook_type' => 'import_products',
-                'priority' => '0',
-                'payload_url' => $baseUrl . '/shop-integrations/product/bulk',
-                'method' => 'POST',
-                'headers' => '{"_1592877368095_95":{"name":"app_id","value":"'. $appId .'"}}',
-                'content_type' => 'application/json',
-                'body' => '{{ item.bunch }}',
+                'name'          => 'On Category Delete',
+                'hook_type'     => 'delete_category',
+                'payload_url'   => "{$baseUrl}/shop-integrations/category",
+                'method'        => 'DELETE',
+                'body'          => '{"categoryId": "{{ item.entity_id }}"}',
             ],
-
+            [
+                'name'          => 'On Import Products',
+                'hook_type'     => 'import_products',
+                'payload_url'   => "{$baseUrl}/shop-integrations/product/bulk",
+                'method'        => 'POST',
+                'body'          => '{{ item.bunch }}',
+            ],
+            [
+                'name'          => 'On Delete Products',
+                'hook_type'     => 'delete_products',
+                'payload_url'   => "{$baseUrl}/shop-integrations/product/bulk",
+                'method'        => 'DELETE',
+                'body'          => '{{ item.bunch }}',
+            ],
         ];
 
         foreach ($hooks as $hook) {
             $setup->getConnection()->insert(
                 $setup->getTable('mageplaza_webhook_hook'),
-                $hook
+                array_merge($baseHook, $hook)
             );
         }
     }
