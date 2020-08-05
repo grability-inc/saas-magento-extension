@@ -13,4 +13,5 @@
     <preference for="Grability\Mobu\Api\PostManagementInterface" type="Grability\Mobu\Model\PostManagement"/>
     <preference for="Mageplaza\Webhook\Block\Adminhtml\Hook\Edit\Tab\Renderer\Body" type="Grability\Mobu\Block\Adminhtml\Hook\Edit\Tab\Renderer\Body"/>
     <preference for="Mageplaza\Webhook\Model\Config\Source\HookType" type="Grability\Mobu\Model\Config\Source\HookType"/>
+    <preference for="Mageplaza\Webhook\Helper\Data" type="Grability\Mobu\Helper\Data"/>
 </config>
