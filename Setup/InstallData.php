@@ -43,6 +43,7 @@ class InstallData implements InstallDataInterface
         $this->mercadopagoLoader();
         $this->webhooksLoader($setup);
         $this->widthAndHeigthLoader($setup);
+        $this->isWhimLoader($setup);
         $this->logoLoader();
 
         $setup->endSetup();
@@ -264,5 +265,36 @@ class InstallData implements InstallDataInterface
         } catch (\Exception $e) {
             $this->logger->error('Magento_Mobu -> invalid logo url');
         }
+    }
+
+    protected function isWhimLoader(ModuleDataSetupInterface $setup)
+    {
+        $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
+
+        $eavSetup->addAttribute(
+            \Magento\Catalog\Model\Product::ENTITY,
+            'isWhim',
+            [
+                'type' => 'int',
+                'backend' => '',
+                'frontend' => '',
+                'label' => 'Is Whim',
+                'input' => 'boolean',
+                'class' => '',
+                'source' => '',
+                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
+                'visible' => true,
+                'required' => true,
+                'user_defined' => false,
+                'default' => false,
+                'searchable' => false,
+                'filterable' => false,
+                'comparable' => false,
+                'visible_on_front' => false,
+                'used_in_product_listing' => false,
+                'unique' => false,
+                'apply_to' => '',
+            ]
+        );
     }
 }
