@@ -4,7 +4,7 @@
   "require": {
     "mageplaza/module-webhook": "1.1.2",
     "mageplaza/module-smtp": "^1.3",
-    "mageplaza/magento-2-spanish-language-pack": "dev-master",
+    "mageplaza/magento-2-spanish-language-pack": "^1.0",
     "mercadopago/magento2-plugin": "3.*",
     "vlucas/phpdotenv": "^2.6.5"
   },
@@ -23,5 +23,11 @@
     "psr-4": {
       "Grability\\Mobu\\": ""
     }
-  }
+  },
+  "repositories": [
+    {
+        "type": "vcs",
+        "url": "git@github.com:grability-inc/magento-2-spanish-language-pack.git"
+    }
+  ]     
 }
