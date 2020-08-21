@@ -19,4 +19,10 @@
         		<parameter name="customerId" force="true">%customer_id%</parameter>
         	</data>
 	</route>
+	<route method="GET" url="/V1/products/configurations/:sku">
+	        <service class="Grability\Mobu\Api\GetManagementInterface" method="getProductConfigurations"/>
+	        <resources>
+	                <resource ref="self"/>
+	        </resources>
+	</route>
 </routes>
