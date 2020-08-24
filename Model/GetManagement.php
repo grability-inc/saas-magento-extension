@@ -15,6 +15,8 @@ namespace Grability\Mobu\Model;
  */
 class GetManagement {
 
+    private $attributeOptions = [];
+    private $typesConfigurations = [];
     private $exception;
     private $productRepository;
 
@@ -23,31 +25,28 @@ class GetManagement {
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
     ) {
         $this->exception = $exception;
-        $this->productRepository = $productRepository;
-    }
+        $this->productRepository = $productRepository;    }
 
     public function getProductConfigurations($sku)
     {
         try {
-            $attributeOptions = [];
-
             $product = $this->productRepository->get($sku);
 
             if ($this->isProductConfigurable($product)) {
-                    $productAttributeOptions = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
+                $productAttributeOptions = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
 
-                    if (!is_null($productAttributeOptions)) {
-                        foreach ($productAttributeOptions as $key => $productAttribute) {
-						  $attributeOptions[$key]['label'] = $productAttribute['label'];
+                if (!is_null($productAttributeOptions)) {
+                    $this->mapConfigurations(0, $productAttributeOptions);
+                }
 
-                          foreach ($productAttribute['values'] as $attribute) {
-                            $attributeOptions[$key]['values'][] = ['index' => $attribute['value_index'], 'value' => $attribute['store_label']];
-                            }
-                        }
-                    }
+                $productsChildren = $product->getTypeInstance()->getUsedProducts($product);
+
+                if (!is_null($productsChildren)) {
+                    $this->mapMultiReference(1, $productsChildren);
+                }
             }
 
-            return $attributeOptions;
+            return $this->attributeOptions;
 
         } catch(\Exception $e) {
             throw new $this->exception(__($e->getMessage()),0,$this->exception::HTTP_BAD_REQUEST);
@@ -57,5 +56,36 @@ class GetManagement {
     protected function isProductConfigurable($product)
     {
         return (!is_null($product) && method_exists($product->getTypeInstance(true), 'getConfigurableAttributesAsArray'));
+    }
+
+    protected function mapConfigurations($mapProcessIndex, $productAttributeOptions)
+    {
+        foreach ($productAttributeOptions as $key => $productAttribute) {
+
+            $this->typesConfigurations[] = strtolower($productAttribute['label']);
+
+            foreach ($productAttribute['values'] as $attribute) {
+                $this->attributeOptions[$mapProcessIndex]['configurations'][strtolower($productAttribute['label'])][] = [
+                    'index' => $attribute['value_index'],
+                    'value' => $attribute['store_label']
+                ];
+            }
+        }
+    }
+
+    protected function mapMultiReference($mapProcessIndex, $productsChildren)
+    {
+        foreach ($productsChildren as $key => $child) {
+            $this->attributeOptions[$mapProcessIndex]['multiReference'][$key] = [
+                'id' => $child->getId(),
+                'sku' => $child->getSku()
+            ];
+
+            foreach ($this->typesConfigurations as $type) {
+                if ($child->getCustomAttribute($type) !== null) {
+                    $this->attributeOptions[$mapProcessIndex]['multiReference'][$key][$type] = $child->getCustomAttribute($type)->getValue();
+                }
+            }
+        }
     }
 }
