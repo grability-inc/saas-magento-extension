@@ -44,6 +44,7 @@ class InstallData implements InstallDataInterface
         $this->webhooksLoader($setup);
         $this->widthAndHeigthLoader($setup);
         $this->isWhimLoader($setup);
+        $this->isRecommendedLoader($setup);
         $this->logoLoader();
 
         $setup->endSetup();
@@ -287,7 +288,38 @@ class InstallData implements InstallDataInterface
                 'source' => '',
                 'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
                 'visible' => true,
-                'required' => true,
+                'required' => false,
+                'user_defined' => false,
+                'default' => false,
+                'searchable' => false,
+                'filterable' => false,
+                'comparable' => false,
+                'visible_on_front' => false,
+                'used_in_product_listing' => false,
+                'unique' => false,
+                'apply_to' => '',
+            ]
+        );
+    }
+
+    protected function isRecommendedLoader(ModuleDataSetupInterface $setup)
+    {
+        $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
+
+        $eavSetup->addAttribute(
+            \Magento\Catalog\Model\Product::ENTITY,
+            'isRecommended',
+            [
+                'type' => 'int',
+                'backend' => '',
+                'frontend' => '',
+                'label' => 'Is Recommended',
+                'input' => 'boolean',
+                'class' => '',
+                'source' => '',
+                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
+                'visible' => true,
+                'required' => false,
                 'user_defined' => false,
                 'default' => false,
                 'searchable' => false,
