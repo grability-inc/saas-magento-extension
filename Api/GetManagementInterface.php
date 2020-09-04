@@ -17,4 +17,11 @@ interface GetManagementInterface {
      * @return mixed
      */
      public function getProductConfigurations($sku);
+
+     /**
+     * Get Best Selling Products
+     * @param string period
+     * @return mixed
+     */
+     public function getBestSellingProducts($period);
 }
