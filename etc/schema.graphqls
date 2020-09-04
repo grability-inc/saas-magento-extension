@@ -1,0 +1,48 @@
+# Copyright © Magento, Inc. All rights reserved.
+# See COPYING.txt for license details.
+
+interface ProductInterface {
+    custom_attributes: [CustomAttribute] @doc(description: "Custom attibutes for product") @resolver(class: "Grability\\Mobu\\Model\\Resolver\\CustomAttributesProvider")
+    stock_item: StockItem @doc(description: "Stock Item for product") @resolver(class: "Grability\\Mobu\\Model\\Resolver\\StockItemProvider")
+}
+
+type CustomAttribute {
+    attribute_code: String
+    attribute_type: CustomAttributeType
+    value: String
+}
+
+enum CustomAttributeType {
+    ARRAY
+    STRING
+}
+
+type StockItem {
+    item_id: Int
+    product_id: Int
+    stock_id: Int
+    qty: Float
+    is_in_stock: Boolean
+    is_qty_decimal: Boolean
+    show_default_notification_message: Boolean
+    use_config_min_qty: Boolean
+    min_qty: Float
+    use_config_min_sale_qty: Int
+    min_sale_qty: Float
+    use_config_max_sale_qty: Boolean
+    max_sale_qty: Float
+    use_config_backorders: Boolean
+    backorders: Int
+    use_config_notify_stock_qty: Boolean
+    notify_stock_qty: Float
+    use_config_qty_increments: Boolean
+    qty_increments: Float
+    use_config_enable_qty_inc: Boolean
+    enable_qty_increments: Boolean
+    use_config_manage_stock: Boolean
+    manage_stock: Boolean
+    low_stock_date: String
+    is_decimal_divided: Boolean
+    stock_status_changed_auto: Int
+    salable_qty: Float
+}
