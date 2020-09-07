@@ -24,4 +24,10 @@ interface GetManagementInterface {
      * @return mixed
      */
      public function getBestSellingProducts($period);
+
+     /**
+     * Get Minimium Order Amount
+     * @return mixed
+     */
+     public function getMinimiumOrderAmount();
 }
