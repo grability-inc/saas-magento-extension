@@ -23,10 +23,12 @@ class GetManagement {
 
     public function __construct(
         \Magento\Framework\Webapi\Exception $exception,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Sales\Model\ResourceModel\Report\Bestsellers\CollectionFactory $collectionFactory
     ) {
         $this->exception = $exception;
+        $this->scopeConfig = $scopeConfig;
         $this->productRepository = $productRepository;
         $this->collectionFactory = $collectionFactory;
     }
@@ -69,6 +71,15 @@ class GetManagement {
             }
 
             return $this->response;
+        } catch(\Exception $e) {
+            throw new $this->exception(__($e->getMessage()),0,$this->exception::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function getMinimiumOrderAmount()
+    {
+        try {
+            return $this->scopeConfig->getValue('sales/minimum_order/amount', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         } catch(\Exception $e) {
             throw new $this->exception(__($e->getMessage()),0,$this->exception::HTTP_BAD_REQUEST);
         }
