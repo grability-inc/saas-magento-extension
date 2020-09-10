@@ -54,38 +54,42 @@ class StockItemProvider implements ResolverInterface
         /* @var $product ProductInterface */
         $product = $value['model'];
 
-        $stockItem = $this->stockRegistry->getStockItem($product->getId());
+        try {
 
-        $salableQty = $this->getProductSalableQty->execute($product->getSku(), $stockItem->getStockId());
+            $stockItem = $this->stockRegistry->getStockItem($product->getId());
+            $salableQty = $this->getProductSalableQty->execute($product->getSku(), $stockItem->getStockId());
 
-        return [
-            'item_id' => $stockItem->getItemId(),
-            'product_id' => $stockItem->getProductId(),
-            'stock_id' => $stockItem->getStockId(),
-            'qty' => $stockItem->getQty(),
-            'is_in_stock' => $stockItem->getIsInStock(),
-            'is_qty_decimal' => $stockItem->getIsQtyDecimal(),
-            'show_default_notification_message' => $stockItem->getShowDefaultNotificationMessage(),
-            'use_config_min_qty' => $stockItem->getUseConfigMinQty(),
-            'min_qty' => $stockItem->getMinQty(),
-            'use_config_min_sale_qty' => $stockItem->getUseConfigMinSaleQty(),
-            'min_sale_qty' => $stockItem->getMinSaleQty(),
-            'use_config_max_sale_qty' => $stockItem->getUseConfigMaxSaleQty(),
-            'max_sale_qty' => $stockItem->getMaxSaleQty(),
-            'use_config_backorders' => $stockItem->getUseConfigBackorders(),
-            'backorders' => $stockItem->getBackorders(),
-            'use_config_notify_stock_qty' => $stockItem->getUseConfigNotifyStockQty(),
-            'notify_stock_qty' => $stockItem->getNotifyStockQty(),
-            'use_config_qty_increments' => $stockItem->getUseConfigQtyIncrements(),
-            'qty_increments' => $stockItem->getQtyIncrements(),
-            'use_config_enable_qty_inc' => $stockItem->getUseConfigEnableQtyInc(),
-            'enable_qty_increments' => $stockItem->getEnableQtyIncrements(),
-            'use_config_manage_stock' => $stockItem->getUseConfigManageStock(),
-            'manage_stock' => $stockItem->getManageStock(),
-            'low_stock_date' => $stockItem->getLowStockDate(),
-            'is_decimal_divided' => $stockItem->getIsDecimalDivided(),
-            'stock_status_changed_auto' => $stockItem->getStockStatusChangedAuto(),
-            'salable_qty' => $salableQty
-        ];
+            return [
+                'item_id' => $stockItem->getItemId(),
+                'product_id' => $stockItem->getProductId(),
+                'stock_id' => $stockItem->getStockId(),
+                'qty' => $stockItem->getQty(),
+                'is_in_stock' => $stockItem->getIsInStock(),
+                'is_qty_decimal' => $stockItem->getIsQtyDecimal(),
+                'show_default_notification_message' => $stockItem->getShowDefaultNotificationMessage(),
+                'use_config_min_qty' => $stockItem->getUseConfigMinQty(),
+                'min_qty' => $stockItem->getMinQty(),
+                'use_config_min_sale_qty' => $stockItem->getUseConfigMinSaleQty(),
+                'min_sale_qty' => $stockItem->getMinSaleQty(),
+                'use_config_max_sale_qty' => $stockItem->getUseConfigMaxSaleQty(),
+                'max_sale_qty' => $stockItem->getMaxSaleQty(),
+                'use_config_backorders' => $stockItem->getUseConfigBackorders(),
+                'backorders' => $stockItem->getBackorders(),
+                'use_config_notify_stock_qty' => $stockItem->getUseConfigNotifyStockQty(),
+                'notify_stock_qty' => $stockItem->getNotifyStockQty(),
+                'use_config_qty_increments' => $stockItem->getUseConfigQtyIncrements(),
+                'qty_increments' => $stockItem->getQtyIncrements(),
+                'use_config_enable_qty_inc' => $stockItem->getUseConfigEnableQtyInc(),
+                'enable_qty_increments' => $stockItem->getEnableQtyIncrements(),
+                'use_config_manage_stock' => $stockItem->getUseConfigManageStock(),
+                'manage_stock' => $stockItem->getManageStock(),
+                'low_stock_date' => $stockItem->getLowStockDate(),
+                'is_decimal_divided' => $stockItem->getIsDecimalDivided(),
+                'stock_status_changed_auto' => $stockItem->getStockStatusChangedAuto(),
+                'salable_qty' => $salableQty
+            ];
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }

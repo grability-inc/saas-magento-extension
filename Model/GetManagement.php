@@ -20,17 +20,21 @@ class GetManagement {
     private $exception;
     private $productRepository;
     private $collectionFactory;
+    private $configurableType;
+    private $scopeConfig;
 
     public function __construct(
         \Magento\Framework\Webapi\Exception $exception,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
-        \Magento\Sales\Model\ResourceModel\Report\Bestsellers\CollectionFactory $collectionFactory
+        \Magento\Sales\Model\ResourceModel\Report\Bestsellers\CollectionFactory $collectionFactory,
+        \Magento\ConfigurableProduct\Model\Product\Type\Configurable $configurableType
     ) {
         $this->exception = $exception;
         $this->scopeConfig = $scopeConfig;
         $this->productRepository = $productRepository;
         $this->collectionFactory = $collectionFactory;
+        $this->configurableType = $configurableType;
     }
 
     public function getProductConfigurations($sku)
@@ -118,6 +122,25 @@ class GetManagement {
                     $this->response[$mapProcessIndex]['multiReference'][$key][$type] = $child->getCustomAttribute($type)->getValue();
                 }
             }
+        }
+    }
+    /**
+     * Get Product Parent
+     * @param string sku
+     * @return \Magento\Catalog\Api\Data\ProductInterface
+     */
+    public function getProductParent($sku)
+    {
+        try {
+            $product = $this->productRepository->get($sku);
+            $parentIds = $this->configurableType->getParentIdsByChild($product->getId());
+            $parentId = array_shift($parentIds);
+            $parent = $this->productRepository->getById($parentId);
+
+            return $parent;
+
+        } catch(\Exception $e) {
+            throw new $this->exception(__($e->getMessage()), 0, $this->exception::HTTP_BAD_REQUEST);
         }
     }
 }
