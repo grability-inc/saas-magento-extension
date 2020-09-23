@@ -14,12 +14,11 @@ trait SkuProcessBunch
 {
     public function processBunch($bunch)
     {
-        $skuArray = array_map(
-            function ($item) {
-                return $item['sku'];
-            },
-            $bunch
-        );
+        $skuArray = [];
+
+        foreach ($bunch as $item) {
+            $skuArray[] = $item['sku'];
+        }
 
         return  json_encode($skuArray);
     }
