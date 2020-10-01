@@ -16,4 +16,13 @@
     <event name="catalog_product_import_bunch_delete_commit_before">
         <observer name="grability_mobu_delete_products" instance="Grability\Mobu\Observer\BeforeProducts"/>
     </event>
+    <event name="catalogrule_rule_save_after">
+        <observer name="grability_mobu_new_catalog_rule" instance="Grability\Mobu\Observer\AfterCatalogRule"/>
+    </event>
+    <event name="catalogrule_rule_save_before">
+        <observer name="grability_mobu_catalog_rule_save_before" instance="Mageplaza\Webhook\Observer\BeforeSave"/>
+    </event>
+    <event name="catalogrule_rule_delete_before">
+        <observer name="grability_mobu_delete_catalog_rule" instance="Grability\Mobu\Observer\BeforeDeleteCatalogRule"/>
+    </event>
 </config>
