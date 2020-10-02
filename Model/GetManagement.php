@@ -64,8 +64,13 @@ class GetManagement {
             $bestSellers->setPeriod($period)->getSelect()->order('period DESC')->order('qty_ordered DESC');
 
             foreach ($bestSellers as $key => $bestSeller) {
-                $this->response[$key]['period'] = $bestSeller->getdata('period');
-                $this->response[$key]['sku'] = $this->productRepository->getById($bestSeller->getProductId())->getSku();
+                try {
+                    $bestSellerPeriod = $bestSeller->getdata('period');
+                    $bestSellerSku = $this->productRepository->getById($bestSeller->getProductId())->getSku();
+
+                    $this->response[$key]['period'] = $bestSellerPeriod;
+                    $this->response[$key]['sku'] = $bestSellerSku;
+                } catch(\Exception $e) {}
             }
 
             return $this->response;
