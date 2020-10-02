@@ -27,8 +27,19 @@ class Body extends MageplazaBody
         if ($hookType == HookType::IMPORT_PRODUCTS || $hookType == HookType::DELETE_PRODUCTS) {
             return [
                 new DataObject([
-                    'name'  => 'bunch',
+                    'name' => 'bunch',
                     'title' => 'bunch'
+                ])
+            ];
+        }
+
+        if ($hookType == HookType::NEW_CATALOG_RULE ||
+            $hookType == HookType::UPDATE_CATALOG_RULE ||
+            $hookType == HookType::DELETE_CATALOG_RULE) {
+            return [
+                new DataObject([
+                    'name' => 'affected_skus',
+                    'title' => 'Affected Skus'
                 ])
             ];
         }
