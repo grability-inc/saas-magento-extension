@@ -107,8 +107,8 @@ class InstallData implements InstallDataInterface
     {
         $this->setData('payment/mercadopago/public_key', getenv('PAYMENT_MERCADOPAGO_PUBLIC_KEY'));
         $this->setData('payment/mercadopago/access_token', getenv('PAYMENT_MERCADOPAGO_ACCESS_TOKEN'));
-        $this->setData('payment/mercadopago_custom/active', '1');
-        $this->setData('payment/mercadopago_basic/active', '0');
+        $this->setData('payment/mercadopago_custom/active', '0');
+        $this->setData('payment/mercadopago_basic/active', '1');
     }
 
     public function webhooksLoader(ModuleDataSetupInterface $setup)
@@ -137,14 +137,14 @@ class InstallData implements InstallDataInterface
                 'hook_type'     => 'update_product',
                 'payload_url'   => "{$baseUrl}/shop-integrations/product",
                 'method'        => 'PUT',
-                'body' => '{"sku": "{{ item.sku }}"}',
+                'body'          => '{"sku": "{{ item.sku }}"}',
             ],
             [
                 'name'          => 'On Product Delete',
                 'hook_type'     => 'delete_product',
-                'payload_url'   => "{$baseUrl}/shop-integrations/product",
+                'payload_url'   => "{$baseUrl}/shop-integrations/product/{{ item.sku }}",
                 'method'        => 'DELETE',
-                'body'          => '{"sku": "{{ item.sku }}"}',
+                'body'          => '',
             ],
             [
                 'name'          => 'On Category Create',
@@ -163,9 +163,9 @@ class InstallData implements InstallDataInterface
             [
                 'name'          => 'On Category Delete',
                 'hook_type'     => 'delete_category',
-                'payload_url'   => "{$baseUrl}/shop-integrations/category",
+                'payload_url'   => "{$baseUrl}/shop-integrations/category/{{ item.entity_id }}",
                 'method'        => 'DELETE',
-                'body'          => '{"categoryId": "{{ item.entity_id }}"}',
+                'body'          => '',
             ],
             [
                 'name'          => 'On Import Products',
@@ -177,9 +177,9 @@ class InstallData implements InstallDataInterface
             [
                 'name'          => 'On Delete Products',
                 'hook_type'     => 'delete_products',
-                'payload_url'   => "{$baseUrl}/shop-integrations/product/bulk",
+                'payload_url'   => "{$baseUrl}/shop-integrations/product/bulk?skus={{ item.bunch }}",
                 'method'        => 'DELETE',
-                'body'          => '{{ item.bunch }}',
+                'body'          => '',
             ],
         ];
 
