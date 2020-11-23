@@ -41,6 +41,7 @@ class InstallData implements InstallDataInterface
 
         $this->smtpLoader();
         $this->mercadopagoLoader();
+        $this->setOutOfStockOn();
         $this->webhooksLoader($setup);
         $this->widthAndHeigthLoader($setup);
         $this->isWhimLoader($setup);
@@ -109,6 +110,11 @@ class InstallData implements InstallDataInterface
         $this->setData('payment/mercadopago/access_token', getenv('PAYMENT_MERCADOPAGO_ACCESS_TOKEN'));
         $this->setData('payment/mercadopago_custom/active', '1');
         $this->setData('payment/mercadopago_basic/active', '0');
+    }
+
+    public function setOutOfStockOn()
+    {
+        $this->setData('cataloginventory/options/show_out_of_stock','1');
     }
 
     public function webhooksLoader(ModuleDataSetupInterface $setup)
