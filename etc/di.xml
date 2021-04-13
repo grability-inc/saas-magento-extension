@@ -15,4 +15,16 @@
     <preference for="Mageplaza\Webhook\Block\Adminhtml\Hook\Edit\Tab\Renderer\Body" type="Grability\Mobu\Block\Adminhtml\Hook\Edit\Tab\Renderer\Body"/>
     <preference for="Mageplaza\Webhook\Model\Config\Source\HookType" type="Grability\Mobu\Model\Config\Source\HookType"/>
     <preference for="Mageplaza\Webhook\Helper\Data" type="Grability\Mobu\Helper\Data"/>
+    
+    <!-- para numero de ceros en factura -->
+    <type name="Magento\Framework\DB\Sequence\SequenceInterface">
+        <arguments>
+            <argument name="pattern" xsi:type="string">%s%'.01d%s</argument>
+        </arguments>
+    </type>
+
+    <!-- para traducciónes de factura pdf con idioma de tienda -->
+    <type name="\Magento\Framework\Locale\ResolverInterface">
+        <plugin name="mage_localeresolver_reload" type="Magento\Framework\Translate\Locale\Resolver\Plugin" sortOrder="1" disabled="false"/>
+    </type>
 </config>
