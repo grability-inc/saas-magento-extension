@@ -942,7 +942,6 @@
                 result = $widget._getNewPrices(),
                 tierPriceHtml,
                 isShow;
-
             var restante = 0;
 
             $productPrice.trigger(
