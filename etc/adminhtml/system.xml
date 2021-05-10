@@ -19,6 +19,11 @@
                     <label>Country Code</label>
                     <comment>register the country code of your store, example "CO" for Colombia.</comment>
                 </field>
+                <field id="button_sync" translate="label" type="button" sortOrder="10" showInDefault="0" showInWebsite="0" showInStore="1">
+                    <frontend_model>Grability\Mobu\Block\System\Config\SyncButton</frontend_model>
+                    <!--<label>Collect all available data (in separate table)</label>-->
+                    <comment>Sync Mobu Data</comment>
+                </field>
             </group>
         </section>
     </system>
