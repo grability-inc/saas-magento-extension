@@ -41,16 +41,6 @@ class ButtonSync extends Action
 
     protected $api_data;
 
-    const DEV_API = [
-        'url' => 'https://connect.grabilitysaas.dev/api/v2/',
-        'app_id' => 'dev.grabilitysaas.mobu'
-    ];
-
-    const PRO_API = [
-        'url' => 'https://connect.grabilitysaas.pro/api/v2/',
-        'app_id' => 'pro.grabilitysaas.mobu'
-    ];
-
     /**
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
@@ -94,7 +84,6 @@ class ButtonSync extends Action
         try {
             $this->api_data = $this->getApi();
 
-            /** @var \Magento\Framework\Controller\Result\Json $result */
             $result = $this->resultJsonFactory->create();
 
             $syncIDType = $this->syncIdTypeMobu();
@@ -118,15 +107,13 @@ class ButtonSync extends Action
 
     public function syncIdTypeMobu()
     {
-        $service = 'retailer/document-types?country={country_code}';
+        $service = '/retailer/document-types?country={country_code}';
 
-        //$websiteId = $this->resolveCurrentWebsiteId();var_dump($websiteId);die();
         $store_id = $this->getCurrentStoreId();
 
-        $country_code = $this->config->getGeneralConfig('country_code', $store_id);
+        $country_code = $this->config->getGeneralConfig('general','country_code', $store_id);
 
         $service = str_replace('{country_code}', $country_code, $service);
-
 
         $curl = curl_init();
 
@@ -140,8 +127,8 @@ class ButtonSync extends Action
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => 'GET',
           CURLOPT_HTTPHEADER => array(
-            'app_id: '. $this->api_data['app_id'],
-            'x-retailer-alias: '. $this->api_data['app_id']
+            'app_id: '. $this->api_data['retailer_alias'],
+            'x-retailer-alias: '. $this->api_data['retailer_alias']
           ),
         ));
 
@@ -159,26 +146,14 @@ class ButtonSync extends Action
     /**
      * Retorna link de api segun estado de Magento
      */
-    public function getApi() {
+    public function getApi() 
+    {
+        $store_id = $this->getCurrentStoreId();
 
-        $api = false;
-
-        switch ( $this->state->getMode() ) {
-            case \Magento\Framework\App\State::MODE_DEFAULT:
-                // Action for default mode
-                $api = self::DEV_API;
-                break;
-            case \Magento\Framework\App\State::MODE_PRODUCTION:
-                // Action for production mode
-                $api = self::PRO_API;
-                break;
-            case \Magento\Framework\App\State::MODE_DEVELOPER:
-                // Action for developer mode
-                $api = self::DEV_API;
-                break;
-        }
-
-        return $api;
+        return [
+            'url' => $this->config->getGeneralConfig('api','url_api', $store_id),
+            'retailer_alias' => $this->config->getGeneralConfig('api','retailer_alias', $store_id)
+        ];
     }    
 
 }

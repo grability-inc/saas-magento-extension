@@ -16,9 +16,9 @@ class Config extends AbstractHelper
 		);
 	}
 
-	public function getGeneralConfig($code, $storeId = null)
+	public function getGeneralConfig($group, $code, $storeId = null)
 	{
-		return $this->getConfigValue(self::XML_PATH_MOBU .'general/'. $code, $storeId);
+		return $this->getConfigValue(self::XML_PATH_MOBU . $group .'/'. $code, $storeId);
 	}
 
 }

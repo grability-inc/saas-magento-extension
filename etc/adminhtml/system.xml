@@ -9,6 +9,17 @@
             <label>MOBU</label>
             <tab>grability</tab>
             <resource>Grability_Mobu::mobu_config</resource>
+            <group id="api" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>API Configuration</label>
+                <field id="url_api" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Url Api</label>
+                    <comment>https://connect.grabilitysaas.dev/api/v2</comment>
+                </field>
+                <field id="retailer_alias" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Retailer Alias</label>
+                    <comment>app_id.</comment>
+                </field>
+            </group> 
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General Configuration</label>
                 <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
