@@ -1,0 +1,11 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <mobu>
+            <api>
+                <url_api>https://connect.grabilitysaas.dev/api/v2</url_api>
+                <retailer_alias>dev.grabilitysaas.mobu</retailer_alias>
+            </api>
+        </mobu>
+    </default>
+</config>
+
